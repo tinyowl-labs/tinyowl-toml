@@ -1,0 +1,97 @@
+# GeoJSON mapping for archaeological excavation data with stratigraphic relations.
+# Designed for FeatureCollection GeoJSON exported from QGIS or field recording systems.
+
+[import]
+entity_type = "context"
+visibility = "group"
+srid = 4326
+
+# --- Column mappings ---
+# In GeoJSON mode, the "source" columns map to GeoJSON Feature properties keys.
+# Geometry is taken directly from the Feature geometry (not a column).
+
+[[column]]
+source = "feature_id"
+target = "source_id"
+
+[[column]]
+source = "label"
+target = "name"
+
+[[column]]
+source = "context_type"
+target = "entity_type"
+
+[[column]]
+source = "period"
+target = "classification"
+delimiter = ";"
+
+[[column]]
+source = "phase"
+target = "phase"
+
+[[column]]
+source = "description"
+target = "description"
+
+[[column]]
+source = "sherd_count"
+target = "sherd_count"
+coerce = "number"
+
+[[column]]
+source = "soil_color"
+target = "soil_colour"
+
+[[column]]
+source = "excavation_method"
+target = "method"
+
+# --- Stratigraphic relations ---
+# These use the standard Harris Matrix predicates commonly used in archaeology.
+
+[[relation]]
+predicate = "above"
+source_column = "is_above"
+delimiter = ","
+direction = "forward"
+
+[[relation]]
+predicate = "below"
+source_column = "is_below"
+delimiter = ","
+direction = "forward"
+
+[[relation]]
+predicate = "cuts"
+source_column = "cuts"
+delimiter = ","
+direction = "forward"
+
+[[relation]]
+predicate = "fills"
+source_column = "fills"
+delimiter = ","
+direction = "forward"
+
+[[relation]]
+predicate = "same_as"
+source_column = "same_as"
+delimiter = ","
+direction = "auto"
+
+[[relation]]
+predicate = "abuts"
+source_column = "abuts"
+delimiter = ","
+
+# --- Dates ---
+# Each context may have multiple date entries keyed by DateLabel.
+
+[[date]]
+from_column = "date_from"
+to_column = "date_to"
+type_column = "date_type"
+type_default = "stratigraphic"
+key_column = "date_label"

@@ -1,0 +1,71 @@
+# CSV mapping with WKT geometry column and stratigraphic relations.
+# Example use case: archaeological trench sections exported from GIS.
+
+[import]
+entity_type = "context"
+visibility = "group"
+srid = 27700
+
+# --- Column mappings ---
+
+[[column]]
+source = "ContextID"
+target = "source_id"
+
+[[column]]
+source = "Label"
+target = "name"
+
+[[column]]
+source = "WKT"
+target = "geometry:wkt"
+coerce = "wkt"
+
+[[column]]
+source = "Description"
+target = "description"
+
+[[column]]
+source = "Phase"
+target = "phase"
+
+[[column]]
+source = "Interpretation"
+target = "classification"
+delimiter = ";"
+
+[[column]]
+source = "Excavator"
+target = "excavated_by"
+exclude = false
+
+# --- Relations ---
+
+[[relation]]
+predicate = "above"
+source_column = "Overlies"
+delimiter = ","
+
+[[relation]]
+predicate = "below"
+source_column = "Underlies"
+delimiter = ","
+direction = "forward"
+
+[[relation]]
+predicate = "fills"
+source_column = "FillsCut"
+delimiter = ","
+
+[[relation]]
+predicate = "same_as"
+source_column = "Equals"
+delimiter = ","
+
+# --- Dates ---
+
+[[date]]
+from_column = "StartDate"
+to_column = "EndDate"
+type_column = "DateSource"
+type_default = "stratigraphic"

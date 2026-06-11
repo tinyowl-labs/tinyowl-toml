@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "$id": "https://tinyowl.dev/schemas/mapping-config.schema.json",
+  "title": "Mapping Config (mapping_config JSONB)",
+  "description": "Wire format sent by the frontend import wizard to core's staging import endpoints. Stored as JSONB in the staging_imports.mapping_config column. Valides the mapping configuration attached to a staged import.",
+  "type": "object",
+  "$comment": "The top-level keys dispatch by source format. Currently 'csvMapping' is the primary supported key. 'geoJsonMapping' struct exists in native parser but is not yet wired in core's parseGeoJSONContent handler.",
+  "anyOf": [
+    {
+      "required": ["csvMapping"]
+    },
+    {
+      "required": ["geoJsonMapping"]
+    }
+  ],
+  "properties": {
+    "csvMapping": {
+      "type": "object",
+      "description": "CSV column mapping configuration. Mirrors the parser.CsvColumnMapping struct in tinyowl-native.",
+      "properties": {
+        "sourceIdColumn": {
+          "type": ["string", "null"],
+          "description": "Column to use as source_id. When absent/null, the row index is used."
+        },
+        "nameColumn": {
+          "type": ["string", "null"],
+          "description": "Column to use as the display name. Falls back to source_id when empty."
+        },
+        "entityTypeColumn": {
+          "type": ["string", "null"],
+          "description": "Column containing the governed entity kind."
+        },
+        "entityTypeDefault": {
+          "type": "string",
+          "description": "Default entity type when entityTypeColumn is absent or empty.",
+          "default": "record"
+        },
+        "excludeColumns": {
+          "type": "array",
+          "description": "Columns to exclude from the entity properties block.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "latColumn": {
+          "type": ["string", "null"],
+          "description": "Column for latitude (paired with lngColumn for Point geometry)."
+        },
+        "lngColumn": {
+          "type": ["string", "null"],
+          "description": "Column for longitude (paired with latColumn for Point geometry)."
+        },
+        "wktColumn": {
+          "type": ["string", "null"],
+          "description": "Column containing WKT geometry strings."
+        },
+        "classificationColumn": {
+          "type": ["string", "null"],
+          "description": "Column containing classification terms (multi-value via delimiter)."
+        },
+        "classificationDelimiter": {
+          "type": "string",
+          "description": "Delimiter for splitting classification column values.",
+          "default": ";"
+        },
+        "relationColumns": {
+          "type": "array",
+          "description": "Relation extraction rules (new multi-instance format).",
+          "items": {
+            "type": "object",
+            "properties": {
+              "targetColumn": {
+                "type": ["string", "null"],
+                "description": "Column containing target entity labels or source_ids."
+              },
+              "relationType": {
+                "type": ["string", "null"],
+                "description": "Governed relation predicate (e.g. 'above', 'below', 'cuts')."
+              },
+              "delimiter": {
+                "type": ["string", "null"],
+                "description": "Separator for multiple targets.",
+                "default": ","
+              },
+              "direction": {
+                "type": ["string", "null"],
+                "enum": ["forward", "inverse", "auto"],
+                "description": "Relation direction."
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "relationMappings": {
+          "type": "object",
+          "description": "Legacy flat relation mapping: column name → relation predicate.",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "dateFromColumn": {
+          "type": ["string", "null"],
+          "description": "Column for the start date."
+        },
+        "dateToColumn": {
+          "type": ["string", "null"],
+          "description": "Column for the end date."
+        },
+        "dateTypeColumn": {
+          "type": ["string", "null"],
+          "description": "Column for the date type."
+        },
+        "dateTypeDefault": {
+          "type": "string",
+          "description": "Default date type when dateTypeColumn is absent or empty.",
+          "default": "other"
+        }
+      },
+      "additionalProperties": false
+    },
+    "geoJsonMapping": {
+      "type": "object",
+      "description": "GeoJSON import mapping configuration. Mirrors the parser.GeoJSONMapping struct in tinyowl-native. Note: current core handler does not yet wire this into parseGeoJSONContent.",
+      "properties": {
+        "nameColumn": {
+          "type": ["string", "null"],
+          "description": "Feature property key for the display name."
+        },
+        "namePrefix": {
+          "type": ["string", "null"],
+          "description": "Optional prefix for the resolved name."
+        },
+        "geometryColumn": {
+          "type": ["string", "null"],
+          "description": "Property key containing WKT/GeoJSON geometry. Null means use Feature geometry."
+        },
+        "excludedColumns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Property keys to exclude."
+        },
+        "entityTypeMode": {
+          "type": "string",
+          "enum": ["fixed", "column"],
+          "description": "How entity type is assigned."
+        },
+        "entityTypeValue": {
+          "type": "string",
+          "description": "Fixed entity type."
+        },
+        "entityTypeColumn": {
+          "type": ["string", "null"],
+          "description": "Column for entity type."
+        },
+        "classifications": {
+          "type": "object",
+          "properties": {
+            "mode": { "type": "string", "enum": ["fixed", "column", "none"] },
+            "value": { "type": ["string", "null"] },
+            "column": { "type": ["string", "null"] },
+            "delimiter": { "type": "string", "default": ";" }
+          },
+          "additionalProperties": false
+        },
+        "relations": {
+          "type": "object",
+          "properties": {
+            "mode": { "type": "string", "enum": ["columns"] },
+            "mappings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "mode": { "type": "string", "enum": ["columns"] },
+                  "targetLabelColumn": { "type": ["string", "null"] },
+                  "delimiter": { "type": "string" },
+                  "direction": { "type": "string", "enum": ["source_is_a", "source_is_b"] },
+                  "relationTypeMode": { "type": "string", "enum": ["fixed", "column"] },
+                  "relationTypeValue": { "type": "string" },
+                  "relationTypeColumn": { "type": ["string", "null"] }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "dates": {
+          "type": "object",
+          "properties": {
+            "mode": { "type": "string", "enum": ["columns", "none"] },
+            "dateFromColumn": { "type": ["string", "null"] },
+            "dateToColumn": { "type": ["string", "null"] },
+            "dateTypeMode": { "type": "string", "enum": ["fixed", "column"] },
+            "dateTypeValue": { "type": "string" },
+            "dateTypeColumn": { "type": ["string", "null"] },
+            "dateKeyMode": { "type": "string" },
+            "dateKeyValue": { "type": ["string", "null"] },
+            "dateKeyColumn": { "type": ["string", "null"] }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}

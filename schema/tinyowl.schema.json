@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "$id": "https://tinyowl.dev/schemas/tinyowl.toml.schema.json",
+  "title": "tinyowl.toml",
+  "description": "Schema for tinyowl.toml — declarative column mapping configuration for TinyOwl imports.",
+  "type": "object",
+  "required": ["import"],
+  "$comment": "Top-level sections map to TOML tables: [database], [server], [import], [[column]], [[relation]], [[date]]. TOML double-bracket tables ([[...]]) become JSON arrays.",
+  "properties": {
+    "database": {
+      "$comment": "TOML table: [database]. Only needed when tinyowl-cli connects directly to Postgres.",
+      "type": "object",
+      "description": "Postgres connection settings (used by CLI for direct database access).",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Postgres connection string (e.g. postgres://user:pass@host:5432/db)."
+        },
+        "max_conns": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 20,
+          "description": "Maximum number of connections in the pool."
+        },
+        "min_conns": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 5,
+          "description": "Minimum number of idle connections maintained."
+        },
+        "statement_timeout": {
+          "type": "string",
+          "pattern": "^[0-9]+(ms|s|m|h)$",
+          "default": "30s",
+          "description": "Maximum duration for a single statement (e.g. '30s', '5m')."
+        }
+      },
+      "additionalProperties": false
+    },
+    "server": {
+      "$comment": "TOML table: [server]. Configures the tinyowl-core HTTP API listener.",
+      "type": "object",
+      "description": "HTTP server settings (used by tinyowl-core).",
+      "properties": {
+        "listen_addr": {
+          "type": "string",
+          "default": ":8090",
+          "description": "Address and port to listen on."
+        },
+        "cors_origin": {
+          "type": "string",
+          "default": "*",
+          "description": "CORS allowed origin header value."
+        }
+      },
+      "additionalProperties": false
+    },
+    "import": {
+      "$comment": "TOML table: [import]. Required section — sets defaults for entity_type, visibility, SRID, date_type, and classification delimiter.",
+      "type": "object",
+      "description": "Global import configuration and defaults.",
+      "required": [],
+      "properties": {
+        "entity_type": {
+          "type": "string",
+          "default": "place",
+          "description": "Default entity kind for imported records (e.g. 'place', 'record', 'find', 'context', 'sample')."
+        },
+        "visibility": {
+          "type": "string",
+          "enum": ["private", "group", "public"],
+          "default": "private",
+          "description": "Default visibility for imported entities."
+        },
+        "srid": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 4326,
+          "description": "Spatial Reference System Identifier (EPSG code)."
+        },
+        "date_type": {
+          "type": "string",
+          "default": "other",
+          "description": "Default date type for imported dates (e.g. 'radiocarbon', 'stratigraphic', 'other')."
+        },
+        "classification_delimiter": {
+          "type": "string",
+          "default": ";",
+          "description": "Default delimiter for multi-value classification columns."
+        }
+      },
+      "additionalProperties": false
+    },
+    "column": {
+      "$comment": "TOML array of tables: [[column]]. Each entry maps a source file column to a TinyOwl entity field. At least one source_id mapping is recommended.",
+      "type": "array",
+      "description": "Column mappings that define how source columns map to TinyOwl entity fields.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["source", "target"],
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "Column name in the source file."
+          },
+          "target": {
+            "type": "string",
+            "description": "Target entity field. Valid values: 'source_id', 'name', 'entity_type', 'geometry:wkt', 'geometry:lat', 'geometry:lng', 'classification', 'relation:<predicate>', 'date:from', 'date:to', 'date:type', or any string for an entity property.",
+            "pattern": "^(source_id|name|entity_type|geometry:wkt|geometry:lat|geometry:lng|classification|relation:.+|date:from|date:to|date:type|.*)$"
+          },
+          "coerce": {
+            "type": "string",
+            "enum": ["string", "number", "boolean", "auto", "wkt"],
+            "default": "auto",
+            "description": "Type coercion for the column value. 'wkt' validates Well-Known Text geometry. 'auto' attempts number/boolean/string detection."
+          },
+          "default": {
+            "type": "string",
+            "default": "",
+            "description": "Default value used when the source column is empty."
+          },
+          "exclude": {
+            "type": "boolean",
+            "default": false,
+            "description": "When true, this column is excluded from the entity properties block."
+          },
+          "delimiter": {
+            "type": "string",
+            "default": ",",
+            "description": "Delimiter for splitting multi-value sources (defaults to ',' for relations, ';' for classifications)."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "relation": {
+      "$comment": "TOML array of tables: [[relation]]. Extracts links between entities using governed predicates (e.g. above, below, cuts, fills).",
+      "type": "array",
+      "description": "Relation extraction rules that link entities via governed predicates.",
+      "items": {
+        "type": "object",
+        "required": ["predicate", "source_column"],
+        "properties": {
+          "predicate": {
+            "type": "string",
+            "description": "Governed relation predicate (e.g. 'above', 'below', 'cuts', 'fills', 'contains', 'same_as')."
+          },
+          "source_column": {
+            "type": "string",
+            "description": "Source column containing target entity source_ids."
+          },
+          "delimiter": {
+            "type": "string",
+            "default": ",",
+            "description": "Separator for multiple target source_ids in a single cell."
+          },
+          "direction": {
+            "type": "string",
+            "enum": ["forward", "inverse", "auto"],
+            "default": "forward",
+            "description": "Relation direction: 'forward' (source → target), 'inverse' (target → source), 'auto' (bidirectional inference)."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "date": {
+      "$comment": "TOML array of tables: [[date]]. Configures temporal data extraction with optional key_column for multiple date entries per entity.",
+      "type": "array",
+      "description": "Date column configuration for temporal data extraction.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "from_column": {
+            "type": "string",
+            "description": "Column for the start date."
+          },
+          "to_column": {
+            "type": "string",
+            "description": "Column for the end date."
+          },
+          "type_column": {
+            "type": "string",
+            "description": "Column for the date type (e.g. 'radiocarbon', 'stratigraphic')."
+          },
+          "type_default": {
+            "type": "string",
+            "default": "other",
+            "description": "Default date type when type_column is absent or empty."
+          },
+          "key_column": {
+            "type": "string",
+            "description": "Column for a named date key (allows multiple date entries per entity)."
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

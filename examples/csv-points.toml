@@ -1,0 +1,61 @@
+# CSV mapping with lat/lng point geometry, classifications, and dates.
+
+[import]
+entity_type = "find"
+visibility = "group"
+srid = 4326
+date_type = "radiocarbon"
+classification_delimiter = ";"
+
+# --- Column mappings ---
+
+[[column]]
+source = "FindID"
+target = "source_id"
+
+[[column]]
+source = "Description"
+target = "name"
+
+[[column]]
+source = "Kind"
+target = "entity_type"
+
+[[column]]
+source = "Latitude"
+target = "geometry:lat"
+coerce = "number"
+
+[[column]]
+source = "Longitude"
+target = "geometry:lng"
+coerce = "number"
+
+[[column]]
+source = "Material"
+target = "material"
+
+[[column]]
+source = "Context"
+target = "context"
+
+[[column]]
+source = "Classes"
+target = "classification"
+delimiter = ";"
+
+# --- Relations ---
+
+[[relation]]
+predicate = "from_context"
+source_column = "ContextID"
+delimiter = ","
+
+# --- Dates ---
+
+[[date]]
+from_column = "DateFrom"
+to_column = "DateTo"
+type_column = "DateQuality"
+type_default = "radiocarbon"
+key_column = "DateLabel"
