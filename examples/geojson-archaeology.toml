@@ -2,7 +2,7 @@
 # Designed for FeatureCollection GeoJSON exported from QGIS or field recording systems.
 
 [import]
-entity_type = "context"
+entity_type = "place"
 visibility = "group"
 srid = 4326
 

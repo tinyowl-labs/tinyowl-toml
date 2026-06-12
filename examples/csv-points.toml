@@ -1,7 +1,7 @@
 # CSV mapping with lat/lng point geometry, classifications, and dates.
 
 [import]
-entity_type = "find"
+entity_type = "object"
 visibility = "group"
 srid = 4326
 date_type = "radiocarbon"

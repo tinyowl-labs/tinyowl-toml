@@ -2,7 +2,7 @@
 # Example use case: archaeological trench sections exported from GIS.
 
 [import]
-entity_type = "context"
+entity_type = "place"
 visibility = "group"
 srid = 27700
 

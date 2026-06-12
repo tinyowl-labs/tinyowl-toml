@@ -64,7 +64,7 @@
         "entity_type": {
           "type": "string",
           "default": "place",
-          "description": "Default entity kind for imported records (e.g. 'place', 'record', 'find', 'context', 'sample')."
+          "description": "Default entity kind for imported records (e.g. 'place', 'object', 'event', 'media', 'record')."
         },
         "visibility": {
           "type": "string",

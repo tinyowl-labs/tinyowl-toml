@@ -4,7 +4,17 @@
   "title": "ImportPlan",
   "description": "Frontend import wizard mapping configuration. This is the format the wizard builds interactively before submitting to core's import endpoints. Diagrams the column-to-field mapping for a single import session.",
   "type": "object",
-  "required": ["nameColumn", "namePrefix", "geometryColumn", "excludedColumns", "visibility", "classifications", "dates", "entityType", "relations"],
+  "required": [
+    "nameColumn",
+    "namePrefix",
+    "geometryColumn",
+    "excludedColumns",
+    "visibility",
+    "classifications",
+    "dates",
+    "entityType",
+    "relations"
+  ],
   "$comment": "Matches the ImportPlan interface from the lamina TypeScript codebase ($lib/types/import.ts). Used in the frontend wizard and sent to core as mapping_config.",
   "properties": {
     "nameColumn": {
@@ -90,7 +100,17 @@
     "dates": {
       "type": "object",
       "description": "Temporal data extraction configuration.",
-      "required": ["mode", "dateFromColumn", "dateToColumn", "dateTypeMode", "dateTypeValue", "dateTypeColumn", "dateKeyMode", "dateKeyValue", "dateKeyColumn"],
+      "required": [
+        "mode",
+        "dateFromColumn",
+        "dateToColumn",
+        "dateTypeMode",
+        "dateTypeValue",
+        "dateTypeColumn",
+        "dateKeyMode",
+        "dateKeyValue",
+        "dateKeyColumn"
+      ],
       "properties": {
         "mode": {
           "type": "string",
@@ -112,7 +132,18 @@
         },
         "dateTypeValue": {
           "type": "string",
-          "enum": ["tpq", "taq", "radiocarbon", "stratigraphic", "typological", "dendro", "luminescence", "period", "excavation", "other"],
+          "enum": [
+            "tpq",
+            "taq",
+            "radiocarbon",
+            "stratigraphic",
+            "typological",
+            "dendro",
+            "luminescence",
+            "period",
+            "excavation",
+            "other"
+          ],
           "description": "Fixed date type when dateTypeMode is 'fixed'."
         },
         "dateTypeColumn": {
@@ -137,7 +168,7 @@
     },
     "entityType": {
       "type": "object",
-      "description": "Governed entity kind assignment (e.g. 'place', 'find', 'context').",
+      "description": "Governed entity kind assignment (e.g. 'place', 'object', 'event', 'media', 'record').",
       "required": ["mode", "value", "column"],
       "properties": {
         "mode": {
@@ -171,7 +202,15 @@
           "description": "List of relation extraction rules.",
           "items": {
             "type": "object",
-            "required": ["mode", "targetLabelColumn", "delimiter", "direction", "relationTypeMode", "relationTypeValue", "relationTypeColumn"],
+            "required": [
+              "mode",
+              "targetLabelColumn",
+              "delimiter",
+              "direction",
+              "relationTypeMode",
+              "relationTypeValue",
+              "relationTypeColumn"
+            ],
             "properties": {
               "mode": {
                 "type": "string",
