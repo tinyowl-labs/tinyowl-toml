@@ -1,0 +1,54 @@
+version = 1
+
+[type]
+key = "finds"
+label = "Artefact"
+description = "A portable object recovered during excavation or survey"
+
+[id]
+prefix = "FND"
+
+[requires]
+name = true
+geometry = false
+
+[properties]
+material = { type = "string", enum = ["pottery", "bone", "metal", "glass", "stone", "organic"] }
+weight_grams = { type = "number" }
+count = { type = "number" }
+notes = { type = "string" }
+
+[sub_type.pottery]
+label = "Pottery"
+description = "Ceramic vessel sherds"
+[sub_type.pottery.properties]
+ware_type = { type = "string" }
+surface_treatment = { type = "string" }
+
+[sub_type.coin]
+label = "Coin"
+description = "Numismatic find"
+[sub_type.coin.properties]
+denomination = { type = "string" }
+ruler = { type = "string" }
+mint = { type = "string" }
+
+[classification]
+vocabulary = "periodisation"
+mode = "column"
+
+[name]
+template = "{material} find #{id}"
+
+[import.from_qgis]
+description = "Finds exported from QGIS"
+format = "geojson"
+
+[import.from_qgis.column.feature_id]
+target = "source_id"
+
+[import.from_qgis.column.material]
+target = "material"
+
+[import.from_qgis.column.period]
+target = "classification"

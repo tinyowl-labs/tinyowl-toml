@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "$id": "https://tinyowl.dev/schemas/mapping.schema.json",
+  "title": "One-off Mapping Configuration",
+  "description": "Schema for one-off import mapping files — ad-hoc column mappings for a single import session.",
+  "type": "object",
+  "required": ["version", "type", "format", "column"],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Schema version of this mapping configuration."
+    },
+    "type": {
+      "type": "string",
+      "description": "Entity type key that this import targets (e.g. 'contexts', 'finds')."
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of this import session."
+    },
+    "format": {
+      "type": "string",
+      "enum": ["csv", "geojson", "jsonl", "gpkg"],
+      "description": "Source data format for this import."
+    },
+    "column": {
+      "type": "object",
+      "description": "Column mappings: source column name → target field configuration.",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["target"],
+        "properties": {
+          "target": {
+            "type": "string",
+            "description": "Target entity field. Known values: 'source_id', 'name', 'entity_type', 'geometry:lat', 'geometry:lng', 'geometry:wkt', 'classification', 'date:from', 'date:to', 'date:type', or any string for a custom entity property key."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "relation": {
+      "type": "object",
+      "description": "Relation extraction rules: rule name → relation config.",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["predicate", "source_column"],
+        "properties": {
+          "predicate": {
+            "type": "string",
+            "description": "Governed relation predicate (e.g. 'above', 'below', 'cuts', 'fills')."
+          },
+          "source_column": {
+            "type": "string",
+            "description": "Source column containing target entity source_ids."
+          },
+          "delimiter": {
+            "type": "string",
+            "default": ",",
+            "description": "Separator for multiple target source_ids in a single cell."
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

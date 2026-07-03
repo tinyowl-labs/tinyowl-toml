@@ -1,0 +1,38 @@
+version = 1
+
+[type]
+key = "samples"
+label = "Environmental Sample"
+description = "A bulk or spot sample taken for environmental or dating analysis"
+
+[id]
+prefix = "SAM"
+
+[requires]
+name = true
+geometry = false
+
+[properties]
+sample_type = { type = "string", enum = ["bulk", "column", "monolith", "spot"] }
+volume_litres = { type = "number" }
+processing_status = { type = "string", enum = ["unprocessed", "floated", "sorted", "analysed"] }
+
+[classification]
+vocabulary = "periodisation"
+mode = "column"
+
+[name]
+template = "{sample_type} sample #{id}"
+
+[import.from_qgis]
+description = "Samples exported from QGIS"
+format = "geojson"
+
+[import.from_qgis.column.feature_id]
+target = "source_id"
+
+[import.from_qgis.column.sample_type]
+target = "sample_type"
+
+[import.from_qgis.column.period]
+target = "classification"

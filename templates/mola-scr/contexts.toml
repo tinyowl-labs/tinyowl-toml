@@ -1,0 +1,78 @@
+version = 1
+
+[type]
+key = "contexts"
+label = "Stratigraphic Context"
+description = "A single depositional event or cut"
+
+[id]
+prefix = "CTX"
+
+[requires]
+name = true
+geometry = true
+
+[properties]
+soil_colour = { type = "string" }
+compaction = { type = "string", enum = ["loose", "firm", "compact", "cemented"] }
+inclusions = { type = "string" }
+excavation_method = { type = "string", enum = ["trowel", "mattock", "sample"] }
+
+[sub_type.cut]
+label = "Cut"
+description = "A negative feature"
+[sub_type.cut.requires]
+name = true
+geometry = true
+[sub_type.cut.properties]
+profile = { type = "string", enum = ["vertical", "steep", "gradual", "undercut"] }
+base_shape = { type = "string", enum = ["flat", "concave", "pointed", "irregular"] }
+
+[sub_type.deposit]
+label = "Deposit"
+description = "A fill or accumulation"
+[sub_type.deposit.requires]
+name = true
+geometry = false
+[sub_type.deposit.properties]
+soil_colour = { type = "string" }
+compaction = { type = "string", enum = ["loose", "firm", "compact", "cemented"] }
+inclusions = { type = "string" }
+
+[sub_type.masonry]
+label = "Masonry"
+description = "A built structural element"
+[sub_type.masonry.requires]
+name = true
+geometry = true
+[sub_type.masonry.properties]
+bond_type = { type = "string" }
+material = { type = "string", enum = ["stone", "brick", "concrete"] }
+
+[classification]
+vocabulary = "periodisation"
+mode = "column"
+
+[name]
+template = "{context_type} ({excavation_method})"
+
+[import.from_qgis]
+description = "Contexts exported from QGIS"
+format = "geojson"
+
+[import.from_qgis.column.feature_id]
+target = "source_id"
+
+[import.from_qgis.column.label]
+target = "name"
+
+[import.from_qgis.column.period]
+target = "classification"
+
+[import.from_qgis.column.soil_colour]
+target = "soil_colour"
+
+[import.from_qgis.relation.above]
+predicate = "above"
+source_column = "overlies"
+delimiter = ","
