@@ -1,0 +1,117 @@
+[table]
+key = "finds"
+label = "Small Find"
+description = "A registered portable object recovered during excavation"
+class = "crm:E19_Physical_Object"
+
+[id]
+prefix = "SF"
+
+[[columns]]
+name = "name"
+type = "string"
+label = "Find name"
+required = true
+
+[[columns]]
+name = "find_type"
+type = "enum"
+label = "Find type"
+required = true
+values = ["pottery", "metal", "glass", "bone", "stone", "coin", "ceramic", "wood", "leather", "textile", "other"]
+vocabulary = "find-type"
+
+[[columns]]
+name = "material"
+type = "string"
+label = "Material"
+vocabulary = "aat"
+property = "crm:P45_consists_of"
+range = "crm:E57_Material"
+
+[[columns]]
+name = "classification"
+type = "string"
+label = "Classification"
+vocabulary = "classification"
+
+[[columns]]
+name = "condition"
+type = "string"
+label = "Condition"
+description = "State of preservation"
+
+[[columns]]
+name = "quantity"
+type = "integer"
+label = "Quantity"
+
+[[columns]]
+name = "weight"
+type = "double"
+label = "Weight (g)"
+
+[[columns]]
+name = "alloy"
+type = "string"
+label = "Alloy"
+description = "Metal composition if applicable"
+
+[[columns]]
+name = "decoration"
+type = "string"
+label = "Decoration"
+
+[[columns]]
+name = "element"
+type = "string"
+label = "Element"
+description = "Diagnostic element (rim, base, handle, etc.)"
+
+[[columns]]
+name = "fabric"
+type = "string"
+label = "Fabric"
+description = "Pottery fabric code or description"
+
+[[columns]]
+name = "form"
+type = "string"
+label = "Form"
+description = "Vessel or object form"
+
+[[columns]]
+name = "object_type"
+type = "string"
+label = "Object type"
+vocabulary = "object-type"
+
+[[columns]]
+name = "species"
+type = "string"
+label = "Species"
+description = "For bone: identified species"
+
+[[columns]]
+name = "photo"
+type = "media"
+label = "Find photograph"
+media = "image/*"
+
+[[columns]]
+name = "scan_3d"
+type = "media"
+label = "3D scan"
+media = "model/*"
+description = "Structured light or photogrammetry scan"
+
+[[columns]]
+name = "geom"
+type = "geometry"
+label = "Location"
+
+[[relations]]
+name = "from_context"
+label = "Recovered from"
+target = "contexts"
+description = "The context this find was recovered from"

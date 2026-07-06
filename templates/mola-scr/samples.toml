@@ -1,0 +1,47 @@
+[table]
+key = "samples"
+label = "Environmental Sample"
+description = "A bulk soil sample taken for environmental processing"
+class = "crm:E19_Physical_Object"
+
+[id]
+prefix = "SA"
+
+[[columns]]
+name = "name"
+type = "string"
+label = "Sample name"
+required = true
+
+[[columns]]
+name = "sample_type"
+type = "enum"
+label = "Sample type"
+values = ["bulk", "column", "monolith", "spot", "other"]
+
+[[columns]]
+name = "classification"
+type = "string"
+label = "Classification"
+
+[[columns]]
+name = "processing_status"
+type = "enum"
+label = "Processing status"
+values = ["unprocessed", "floated", "sorted", "analysed", "discarded"]
+
+[[columns]]
+name = "volume_litres"
+type = "double"
+label = "Volume (L)"
+
+[[columns]]
+name = "geom"
+type = "geometry"
+label = "Location"
+
+[[relations]]
+name = "from_context"
+label = "Taken from"
+target = "contexts"
+description = "The context this sample was taken from"

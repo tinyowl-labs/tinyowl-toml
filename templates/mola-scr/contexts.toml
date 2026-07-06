@@ -1,0 +1,90 @@
+[table]
+key = "contexts"
+label = "Stratigraphic Context"
+description = "A single depositional event, cut, or built structure"
+class = "crm:E18_Physical_Thing"
+
+[id]
+prefix = "CTX"
+
+[[columns]]
+name = "name"
+type = "string"
+label = "Context name"
+required = true
+description = "Human-readable label, often auto-generated from template"
+
+[[columns]]
+name = "context_type"
+type = "enum"
+label = "Context type"
+required = true
+values = ["deposit", "cut", "masonry", "timber", "skeleton"]
+vocabulary = "context-type"
+
+[[columns]]
+name = "period"
+type = "string"
+label = "Historical period"
+vocabulary = "periodo"
+property = "crm:P4_has_time-span"
+range = "crm:E52_Time-Span"
+
+[[columns]]
+name = "soil_colour"
+type = "string"
+label = "Soil colour"
+property = "crm:P3_has_note"
+description = "Munsell notation or field description"
+
+[[columns]]
+name = "compaction"
+type = "enum"
+label = "Compaction"
+values = ["loose", "firm", "compact", "cemented"]
+
+[[columns]]
+name = "inclusions"
+type = "string"
+label = "Inclusions"
+description = "Description of visible inclusions"
+
+[[columns]]
+name = "excavation_method"
+type = "enum"
+label = "Excavation method"
+values = ["trowel", "mattock", "sample", "machine"]
+
+[[columns]]
+name = "photo"
+type = "media"
+label = "Context photograph"
+media = "image/*"
+property = "crm:P138i_has_representation"
+range = "crm:E36_Visual_Item"
+
+[[columns]]
+name = "photomodel"
+type = "media"
+label = "3D photogrammetry model"
+media = "model/*"
+property = "crm:P138i_has_representation"
+range = "crm:E73_Information_Object"
+
+[[columns]]
+name = "geom"
+type = "geometry"
+label = "Geometry"
+
+[[relations]]
+name = "above"
+label = "Stratigraphically above"
+target = "contexts"
+description = "This context overlies the target context"
+property = "crm:P89_falls_within"
+
+[[relations]]
+name = "contains"
+label = "Contains find"
+target = "finds"
+description = "Find was recovered from this context"

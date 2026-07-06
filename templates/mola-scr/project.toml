@@ -1,0 +1,21 @@
+[project]
+name = "MOLA SCR Template"
+slug = "mola-scr-template"
+description = "Standard Context Recording system used by MOLA (Museum of London Archaeology). Suitable for UK commercial archaeology projects."
+machine = "d3f"
+
+[[ontologies]]
+prefix = "periodo"
+name = "PeriodO"
+description = "Historical period definitions"
+
+[[ontologies]]
+prefix = "aat"
+name = "Getty AAT"
+description = "Material and object type vocabulary"
+
+[[ontologies]]
+prefix = "crm"
+name = "CIDOC-CRM"
+version = "7.1.1"
+description = "Core ontology for cultural heritage data"
