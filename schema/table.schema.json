@@ -42,6 +42,8 @@
           "property": { "type": "string" },
           "range": { "type": "string" },
           "references": { "type": "string" },
+          "references_value": { "type": "string", "description": "QGIS ValueRelation display column (Value option)" },
+          "allow_multi": { "type": "boolean", "description": "QGIS ValueRelation AllowMulti (stored as fid list)" },
           "unique": { "type": "boolean" }
         },
         "additionalProperties": false
