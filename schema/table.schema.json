@@ -32,18 +32,21 @@
         "required": ["name", "type", "label"],
         "properties": {
           "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
-          "type": { "type": "string", "enum": ["id", "string", "integer", "double", "boolean", "date", "datetime", "arch_date", "enum", "media", "geometry"] },
+          "type": { "type": "string", "enum": ["id", "string", "integer", "double", "boolean", "date", "datetime", "arch_date", "enum", "array", "media", "geometry"] },
           "label": { "type": "string", "minLength": 1 },
           "required": { "type": "boolean" },
           "description": { "type": "string" },
           "values": { "type": "array", "items": { "type": "string" } },
+          "item": { "type": "string", "enum": ["string", "integer", "enum", "id"], "description": "Element type when type=array" },
+          "delimiter": { "type": "string", "description": "Array element separator (default ','). Also ';', '|'." },
+          "wrapper": { "type": "string", "enum": ["{}", "[]", "()", "none", ""], "description": "Preferred array wrapper; parse accepts all forms" },
           "media": { "type": "string" },
           "vocabulary": { "type": "string" },
           "property": { "type": "string" },
           "range": { "type": "string" },
           "references": { "type": "string" },
           "references_value": { "type": "string", "description": "QGIS ValueRelation display column (Value option)" },
-          "allow_multi": { "type": "boolean", "description": "QGIS ValueRelation AllowMulti (stored as fid list)" },
+          "allow_multi": { "type": "boolean", "description": "QGIS ValueRelation AllowMulti — treated as type=array with wrapper={}" },
           "unique": { "type": "boolean" }
         },
         "additionalProperties": false
