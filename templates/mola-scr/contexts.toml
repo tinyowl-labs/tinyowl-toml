@@ -31,6 +31,14 @@ property = "crm:P4_has_time-span"
 range = "crm:E52_Time-Span"
 
 [[columns]]
+name = "excavation_year"
+type = "arch_date"
+label = "Excavation year"
+description = "Field season / excavation year (arch_date JSON or plain year)"
+property = "crm:P4_has_time-span"
+range = "crm:E52_Time-Span"
+
+[[columns]]
 name = "soil_colour"
 type = "string"
 label = "Soil colour"
