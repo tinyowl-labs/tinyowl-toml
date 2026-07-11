@@ -32,7 +32,7 @@
         "required": ["name", "type", "label"],
         "properties": {
           "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
-          "type": { "type": "string", "enum": ["id", "string", "integer", "double", "boolean", "date", "datetime", "enum", "media", "geometry"] },
+          "type": { "type": "string", "enum": ["id", "string", "integer", "double", "boolean", "date", "datetime", "arch_date", "enum", "media", "geometry"] },
           "label": { "type": "string", "minLength": 1 },
           "required": { "type": "boolean" },
           "description": { "type": "string" },

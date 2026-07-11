@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "$id": "https://tinyowl.dev/schemas/mappings.schema.json",
+  "title": "Value Mappings",
+  "description": "Optional mappings.toml — value→concept seeds that upsert into value_mappings on push.",
+  "type": "object",
+  "properties": {
+    "mapping": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["entity_type", "column_name", "local_value", "concept_uri"],
+        "properties": {
+          "entity_type": { "type": "string" },
+          "column_name": { "type": "string" },
+          "local_value": { "type": "string" },
+          "concept_uri": { "type": "string" },
+          "vocabulary": { "type": "string" },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
