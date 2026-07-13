@@ -128,7 +128,7 @@ property = "crm:P89_falls_within"
 | [tinyowl-cli](https://github.com/tinyowl-labs/tinyowl-cli) | `templates.FS` for `--template`, TOML schema generation on import |
 | [tinyowl-server](https://github.com/tinyowl-labs/tinyowl-server) | Vocab annotation parsing from TOML headers on push |
 | [tinyowl-native](https://github.com/tinyowl-labs/tinyowl-native) | TOML ↔ GPKG schema generation |
-| [tinyowl-frontend](https://github.com/tinyowl-labs/tinyowl-frontend) | Template browsing, schema validation in the UI |
+| [tinyowl](https://github.com/tinyowl-labs/tinyowl) | Template browsing in the web UI |
 
 ## Install
 
