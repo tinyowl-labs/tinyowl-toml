@@ -54,6 +54,35 @@
         },
         "additionalProperties": false
       }
+    },
+    "predicates": {
+      "type": "array",
+      "description": "Optional registry of relation predicates (hints only; instance edges use free-string predicates in _relations).",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "inverse": { "type": "string", "minLength": 1 },
+          "symmetric": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "graph": {
+      "type": "object",
+      "description": "Optional graph-view hints (predicate names for band membership/order).",
+      "properties": {
+        "bands": {
+          "type": "object",
+          "properties": {
+            "membership": { "type": "string", "minLength": 1 },
+            "order": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false
