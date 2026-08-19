@@ -19,3 +19,14 @@ prefix = "crm"
 name = "CIDOC-CRM"
 version = "7.1.1"
 description = "Core ontology for cultural heritage data"
+
+[[predicates]]
+name = "above"
+inverse = "below"
+
+[[predicates]]
+name = "contains"
+
+[graph.bands]
+membership = "member_of"
+order = "precedes"
